@@ -3,542 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps & SRE Interview Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>DevOps Interview Guide</title>
+    <!-- Premium Google Fonts & FontAwesome for Exact Icon Match -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-base: #0c0a09;
-            --bg-sidebar: #1c1917;
-            --bg-card: #262220;
-            --border: #443e3a;
-            --text-main: #f5f5f4;
-            --text-muted: #a8a29e;
+            --bg-sidebar: #0b0f17;
+            --bg-main: #0d111c;
+            --bg-card: #161b26;
+            --border: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             
-            /* DevOps Amber/Orange Theme Accent Palette */
-            --amber-glow: #f97316;
-            --amber-hover: #fb923c;
-            --amber-bg-opaque: rgba(249, 115, 22, 0.08);
-            --code-terminal: #020202;
+            /* Custom Vibrating Orange Palette requested */
+            --orange-primary: #ff6b00;
+            --orange-glow: rgba(255, 107, 0, 0.15);
+            --orange-hover: #ff8533;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-base);
+            background-color: var(--bg-main);
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Responsive Sidebar Tree Navigation */
+        /* --- Left Sidebar Layout --- */
         aside {
-            width: 330px;
+            width: 280px;
             background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
+            z-index: 50;
         }
 
-        .brand-identity {
-            padding: 2.25rem 1.5rem;
+        .sidebar-header {
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .brand-identity h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            color: var(--text-main);
-        }
-
-        .brand-identity p {
-            font-size: 0.8rem;
-            color: var(--amber-glow);
-            font-family: 'JetBrains Mono', monospace;
-            margin-top: 0.35rem;
-        }
-
-        .navigation-tree {
+        .sidebar-menu {
             list-style: none;
-            padding: 1.5rem 1rem;
+            padding: 1rem;
             overflow-y: auto;
             flex-grow: 1;
         }
 
-        .tree-category {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 0.12em;
-            margin: 1.5rem 0 0.5rem 0.5rem;
-        }
-
-        .tree-node {
+        .menu-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 0.75rem;
             padding: 0.75rem 1rem;
             color: var(--text-muted);
             text-decoration: none;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: 0.3rem;
-            cursor: pointer;
-        }
-
-        .tree-node:hover, .tree-node.active {
-            color: var(--text-main);
-            background-color: var(--amber-bg-opaque);
-            border-left: 3px solid var(--amber-glow);
-        }
-
-        .pulse-beacon {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background-color: var(--amber-glow);
-            box-shadow: 0 0 10px var(--amber-glow);
-        }
-
-        /* Portfolio Engineering Main Content Frame */
-        main {
-            margin-left: 330px;
-            flex-grow: 1;
-            padding: 3.5rem;
-            max-width: 1150px;
-        }
-
-        .workspace-view {
-            display: none;
-        }
-
-        .workspace-view.active {
-            display: block;
-            animation: paneSlide 0.3s ease-out;
-        }
-
-        @keyframes paneSlide {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Topic Heading Styling */
-        .topic-header h2 {
-            font-size: 2rem; 
-            letter-spacing: -0.03em;
+            border-radius: 8px;
             margin-bottom: 0.25rem;
-        }
-        
-        .topic-header p {
-            color: var(--text-muted);
-        }
-
-        /* Question Blueprint Cards */
-        .problem-card {
-            background-color: var(--bg-sidebar);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            overflow: hidden;
-            margin-top: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .problem-card-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .badge-array {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .pill-badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            background-color: rgba(249, 115, 22, 0.05);
-            color: var(--amber-hover);
-            padding: 0.2rem 0.6rem;
-            border-radius: 0.25rem;
-            border: 1px solid rgba(249, 115, 22, 0.15);
-        }
-
-        .explanation-deck {
-            padding: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.01);
-            border-bottom: 1px solid var(--border);
-            line-height: 1.65;
-            color: #d6d3d1;
-        }
-
-        .explanation-deck ul {
-            margin-top: 0.75rem;
-            margin-left: 1.25rem;
-        }
-
-        .explanation-deck li {
-            margin-bottom: 0.4rem;
-        }
-
-        /* Code Terminal Canvas Panels */
-        .terminal-canvas {
-            background-color: var(--code-terminal);
-        }
-
-        .terminal-header {
-            background-color: #141210;
-            padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .terminal-filename {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .copy-trigger {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 0.35rem 0.75rem;
-            border-radius: 0.375rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .copy-trigger:hover {
+        .menu-item i {
+            width: 20px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Active link mimics the pill shape from the original image */
+        .menu-item.active {
+            color: #fff;
+            background-color: var(--orange-primary);
+            box-shadow: 0 4px 12px var(--orange-glow);
+        }
+
+        .menu-item:not(.active):hover {
             color: var(--text-main);
-            background-color: var(--bg-card);
-            border-color: var(--amber-glow);
+            background-color: rgba(255, 255, 255, 0.03);
         }
 
-        pre {
-            padding: 1.5rem;
-            overflow-x: auto;
-            font-family: 'JetBrains Mono', monospace;
+        /* --- Top Header Navigation --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 64px;
+            background-color: rgba(13, 17, 28, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 40;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toggle-sidebar-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .brand-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .brand-title span {
+            color: var(--orange-primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem 0.5rem 2.2rem;
+            border-radius: 6px;
+            color: #fff;
             font-size: 0.875rem;
-            line-height: 1.6;
-            color: #e7e5e4;
+            width: 240px;
+            transition: all 0.2s ease;
         }
 
-        /* Responsive Breakpoint Matrix */
+        .search-input:focus {
+            outline: none;
+            border-color: var(--orange-primary);
+            box-shadow: 0 0 0 2px var(--orange-glow);
+        }
+
+        .nav-icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .nav-icon-btn:hover {
+            color: var(--text-main);
+        }
+
+        /* --- Content Container Management --- */
+        main {
+            margin-left: 280px;
+            margin-top: 64px;
+            flex-grow: 1;
+            padding: 3rem 2rem;
+            min-height: calc(100vh - 64px);
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active {
+            display: block;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Hero Landing View Structure --- */
+        .hero-section {
+            text-align: center;
+            padding: 5rem 1rem 3rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pill-announcement {
+            background-color: rgba(255, 107, 0, 0.08);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            color: var(--orange-hover);
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title span {
+            color: var(--orange-primary);
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--orange-primary);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--orange-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: var(--text-muted);
+        }
+
+        /* --- Standard Documentation Inner Pages --- */
+        .doc-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+
+        .doc-header h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .qa-card {
+            background-color: rgba(22, 27, 38, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.7rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .qa-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .qa-card h3::before {
+            content: "Q:";
+            color: var(--orange-primary);
+            font-weight: 700;
+        }
+
+        .qa-answer {
+            color: #cbd5e1;
+            line-height: 1.65;
+            font-size: 1rem;
+        }
+
+        /* Codeblock styling */
+        pre {
+            background-color: #060911;
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+        /* --- Responsive Viewports --- */
         @media (max-width: 992px) {
-            body { flex-direction: column; }
-            aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
-            main { margin-left: 0; padding: 1.5rem; }
+            aside { transform: translateX(-100%); transition: transform 0.3s ease; }
+            aside.open { transform: translateX(0); }
+            header { left: 0; }
+            main { margin-left: 0; }
         }
     </style>
 </head>
 <body>
 
-    <aside>
-        <div class="brand-identity">
-            <h1>DevOps System Guide</h1>
-            <p><i class="fa-solid fa-fire" style="color:var(--amber-glow)"></i> branch: orange-theme</p>
+    <!-- Left Sidebar: Populated perfectly with your exact categories -->
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-regular fa-folder-open"></i> Documentation
         </div>
-        
-        <nav class="navigation-tree">
-            <div class="tree-category">Linux Systems</div>
-            <div class="tree-node active" onclick="navigateWorkspace(event, 'linux-boot')">
-                <span><i class="fa-solid fa-terminal"></i> Boot Process</span>
-                <span class="pulse-beacon"></span>
-            </div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'linux-load')">
-                <span><i class="fa-solid fa-microchip"></i> System Load Metrics</span>
-                <span class="pulse-beacon"></span>
-            </div>
-            
-            <div class="tree-category">Version Control & Git</div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'git-hooks')">
-                <span><i class="fa-brands fa-git-alt"></i> Commit Verification Hooks</span>
-                <span class="pulse-beacon"></span>
-            </div>
-            
-            <div class="tree-category">Containers & Orchestration</div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'docker-optimization')">
-                <span><i class="fa-brands fa-docker"></i> Layer Optimization</span>
-                <span class="pulse-beacon"></span>
-            </div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'k8s-networking')">
-                <span><i class="fa-solid fa-network-wired"></i> Pod Networking & DNS</span>
-                <span class="pulse-beacon"></span>
-            </div>
-
-            <div class="tree-category">Infrastructure As Code</div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'tf-backends')">
-                <span><i class="fa-solid fa-cloud"></i> Remote State Storage</span>
-                <span class="pulse-beacon"></span>
-            </div>
-        </nav>
+        <ul class="sidebar-menu">
+            <li class="menu-item active" onclick="switchPage(event, 'home')">
+                <i class="fa-solid fa-house"></i> Home
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'terraform')">
+                <i class="fa-solid fa-code"></i> Terraform
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'azure-core')">
+                <i class="fa-solid fa-cloud"></i> Azure Core
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'azure-devops')">
+                <i class="fa-solid fa-infinity"></i> Azure DevOps
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'docker')">
+                <i class="fa-brands fa-docker"></i> Docker
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'kubernetes')">
+                <i class="fa-solid fa-cubes"></i> Kubernetes
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'git')">
+                <i class="fa-brands fa-git-alt"></i> Git
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'azure-monitor')">
+                <i class="fa-solid fa-chart-line"></i> Azure Monitor
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'linux')">
+                <i class="fa-solid fa-terminal"></i> Linux
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'behavioral')">
+                <i class="fa-solid fa-users"></i> Behavioral/HR
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'miscellaneous')">
+                <i class="fa-solid fa-cubes-stacked"></i> Miscellaneous
+            </li>
+            <li class="menu-item" onclick="switchPage(event, 'finops')">
+                <i class="fa-solid fa-dollar-sign"></i> FinOps
+            </li>
+        </ul>
     </aside>
 
+    <!-- Top Navigation Bar Layout -->
+    <header>
+        <div class="header-left">
+            <button class="toggle-sidebar-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="brand-title">DevOps <span>Interview Guide</span></div>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="search-input" placeholder="Search documentation...">
+            </div>
+            <button class="nav-icon-btn"><i class="fa-regular fa-moon"></i></button>
+            <button class="nav-icon-btn"><i class="fa-brands fa-github"></i></button>
+        </div>
+    </header>
+
+    <!-- Main Live Dynamic Content Panel Frame -->
     <main>
+        <div class="content-wrapper">
 
-        <div id="linux-boot" class="workspace-view active">
-            <div class="topic-header">
-                <h2>Linux Kernel & OS Core</h2>
-                <p>Core Topic: System Initialization Runlevels</p>
+            <!-- PAGE VIEW: Home Landing (Matches image_95ce4d.jpg) -->
+            <div id="home" class="page-view active">
+                <section class="hero-section">
+                    <div class="pill-announcement">
+                        <i class="fa-regular fa-bookmark"></i> Your Complete DevOps Interview Preparation Guide
+                    </div>
+                    <h1 class="hero-title">Master <span>DevOps</span> Interviews</h1>
+                    <p class="hero-subtitle">
+                        Comprehensive collection of interview questions for Terraform, Azure, Azure DevOps, Docker, and Kubernetes. Everything you need to ace your next DevOps interview.
+                    </p>
+                    <div class="cta-group">
+                        <button class="btn btn-primary" onclick="document.querySelector('[onclick*=\'terraform\']').click()">Start Learning <i class="fa-solid fa-arrow-right" style="margin-left: 0.25rem;"></i></button>
+                        <a href="https://github.com/riteshatri/Devops-Interview-Guide" target="_blank" class="btn btn-secondary">Ritesh Sharma's GitHub</a>
+                    </div>
+                </section>
             </div>
-            
-            <div class="problem-card">
-                <div class="problem-card-header">
-                    <div>
-                        <h3>Explain the standard high-level Linux Boot Process step-by-step.</h3>
-                        <div class="badge-array"><span class="pill-badge">Kernel Space</span><span class="pill-badge">SysInit</span></div>
-                    </div>
-                </div>
-                <div class="explanation-deck">
-                    <strong>Answer Blueprint:</strong>
-                    <ul>
-                        <li><strong>BIOS/UEFI:</strong> Executes Power-On Self-Test (POST) and initializes hardware settings from the Master Boot Record (MBR).</li>
-                        <li><strong>GRUB Bootloader:</strong> Loads the designated Linux kernel image and the temporary virtual file system (initramfs) into memory.</li>
-                        <li><strong>Kernel Stage:</strong> Initializes system root drivers, starts storage mounts, and invokes the primary system initialization process.</li>
-                        <li><strong>systemd / Init:</strong> Spawns daemon trees based on defined target milestones (e.g., multi-user graphical vs command console networks).</li>
-                    </ul>
-                </div>
-                <div class="terminal-canvas">
-                    <div class="terminal-header">
-                        <div class="terminal-filename"><i class="fa-solid fa-gears" style="color: var(--amber-glow);"></i> console-logs.sh</div>
-                        <button class="copy-trigger" onclick="executeScraper(this, 'code-boot')"><i class="fa-regular fa-copy"></i> Copy Output</button>
-                    </div>
-                    <pre><code id="code-boot"># Inspect system initialization run metrics via terminal commands
-dmesg | grep -i "kernel initialized"
 
-# View system active operational target parameters
-systemctl get-default
-# Output: multi-user.target</code></pre>
+            <!-- PAGE VIEW: Terraform -->
+            <div id="terraform" class="page-view">
+                <div class="doc-header">
+                    <h2>Terraform Core Architecture</h2>
                 </div>
-            </div>
-        </div>
-
-        <div id="linux-load" class="workspace-view">
-            <div class="topic-header">
-                <h2>Performance Monitoring & Diagnostics</h2>
-                <p>Core Topic: Decoding System CPU Contention Anomalies</p>
-            </div>
-            
-            <div class="problem-card">
-                <div class="problem-card-header">
-                    <div>
-                        <h3>What do the three averages represent in a System Load Metric?</h3>
-                        <div class="badge-array"><span class="pill-badge">Performance</span><span class="pill-badge">Debugging</span></div>
+                <div class="qa-card">
+                    <h3>What is the purpose of Terraform State?</h3>
+                    <div class="qa-answer">
+                        Terraform records information about real-world infrastructure properties inside a state file (`terraform.tfstate`). This mechanism serves as a single source of truth mapping your remote cloud resource blueprints directly back onto configuration definitions.
                     </div>
                 </div>
-                <div class="explanation-deck">
-                    <strong>Answer Blueprint:</strong> The load numbers indicate the average count of active executable processes waiting in the system processor pipeline over the last <strong>1 minute</strong>, <strong>5 minutes</strong>, and <strong>15 minutes</strong> respectively. High averages paired with low CPU utilization points to deep disk I/O network bottlenecks.
-                </div>
-                <div class="terminal-canvas">
-                    <div class="terminal-header">
-                        <div class="terminal-filename"><i class="fa-solid fa-chart-line" style="color: var(--amber-glow);"></i> telemetry-check.sh</div>
-                        <button class="copy-trigger" onclick="executeScraper(this, 'code-load')"><i class="fa-regular fa-copy"></i> Copy Snippet</button>
-                    </div>
-                    <pre><code id="code-load"># Display real-time execution load factors directly
-uptime
-# Output format: load average: 0.45, 0.85, 1.20
-
-# Query underlying hardware processor thread layout limits
-nproc</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <div id="git-hooks" class="workspace-view">
-            <div class="topic-header">
-                <h2>Version Control Strategies</h2>
-                <p>Core Topic: Pre-Commit Automation Guardrails</p>
-            </div>
-            
-            <div class="problem-card">
-                <div class="problem-card-header">
-                    <div>
-                        <h3>How do you automatically intercept local commits to block raw token leaks?</h3>
-                        <div class="badge-array"><span class="pill-badge">Git Core</span><span class="pill-badge">Security Audit</span></div>
-                    </div>
-                </div>
-                <div class="explanation-deck">
-                    <strong>Answer Blueprint:</strong> Implement a local pre-commit regex scanner engine. These configuration maps hook cleanly into hidden folder structures (`.git/hooks/pre-commit`), parsing tracking patches for key sequences before any text updates commit to codebases.
-                </div>
-                <div class="terminal-canvas">
-                    <div class="terminal-header">
-                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> pre-commit</div>
-                        <button class="copy-trigger" onclick="executeScraper(this, 'code-hooks')"><i class="fa-regular fa-copy"></i> Copy Snippet</button>
-                    </div>
-                    <pre><code id="code-hooks">#!/bin/sh
-# Intercept staging modifications for security validation
-if git diff --cached | grep -E 'aws_secret_access_key|token|passwd'; then
-    echo "❌ SECURITY EXCEPTION: Plaintext token pattern found inside patch history."
-    exit 1
-fi
-echo "✅ Audit passed successfully."</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <div id="docker-optimization" class="workspace-view">
-            <div class="topic-header">
-                <h2>Container Architecture Management</h2>
-                <p>Core Topic: Stripping Compilation Footprints</p>
-            </div>
-            
-            <div class="problem-card">
-                <div class="problem-card-header">
-                    <div>
-                        <h3>How do you safely shrink continuous build delivery images under compliance rules?</h3>
-                        <div class="badge-array"><span class="pill-badge">Docker</span><span class="pill-badge">Layer Caching</span></div>
-                    </div>
-                </div>
-                <div class="explanation-deck">
-                    <strong>Answer Blueprint:</strong> Structure multi-stage Dockerfiles. Separate target environments explicitly: encapsulate tooling configurations inside temporary compiler layers, pulling down compiled target packages into lightweight, security-hardened `alpine` production shells.
-                </div>
-                <div class="terminal-canvas">
-                    <div class="terminal-header">
-                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> Dockerfile</div>
-                        <button class="copy-trigger" onclick="executeScraper(this, 'code-docker')"><i class="fa-regular fa-copy"></i> Copy Manifest</button>
-                    </div>
-                    <pre><code id="code-docker"># Stage 1: Build & Compile Binaries
-FROM golang:1.21-alpine AS engine-builder
-WORKDIR /src
-COPY . .
-RUN CGO_ENABLED=0 go build -o system-service .
-
-# Stage 2: Hardened Runtime Layer
-FROM alpine:3.19
-WORKDIR /app
-COPY --from=engine-builder /src/system-service .
-USER 1001
-ENTRYPOINT ["./system-service"]</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <div id="k8s-networking" class="workspace-view">
-            <div class="topic-header">
-                <h2>Cloud Orchestration Engineering</h2>
-                <p>Core Topic: Pod Routing Planes & CoreDNS Resolution</p>
-            </div>
-            
-            <div class="problem-card">
-                <div class="problem-card-header">
-                    <div>
-                        <h3>Explain how internal service discovery paths operate inside a Cluster.</h3>
-                        <div class="badge-array"><span class="pill-badge">Networking</span><span class="pill-badge">Kubernetes Core</span></div>
-                    </div>
-                </div>
-                <div class="explanation-deck">
-                    <strong>Answer Blueprint:</strong> Every Service created gets an internal cluster DNS record mapping back to its virtual ip footprint via `kube-dns` or `CoreDNS`. Network paths route directly following structured syntax constraints: <code>[service-name].[namespace].svc.cluster.local</code>.
-                </div>
-                <div class="terminal-canvas">
-                    <div class="terminal-header">
-                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> network-service.yaml</div>
-                        <button class="copy-trigger" onclick="executeScraper(this, 'code-k8s')"><i class="fa-regular fa-copy"></i> Copy Manifest</button>
-                    </div>
-                    <pre><code id="code-k8s">apiVersion: v1
-kind: Service
-metadata:
-  name: billing-database-service
-  namespace: data-tier
-spec:
-  ports:
-  - port: 5432
-    targetPort: 5432
-  selector:
-    app: secure-postgres-db</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <div id="tf-backends" class="workspace-view">
-            <div class="topic-header">
-                <h2>Infrastructure as Code (IaC)</h2>
-                <p>Core Topic: Concurrent State Synchronization Systems</p>
-            </div>
-            
-            <div class="problem-card">
-                <div class="problem-card-header">
-                    <div>
-                        <h3>Why is remote state locking mandatory for corporate cloud operations?</h3>
-                        <div class="badge-array"><span class="pill-badge">Terraform</span><span class="pill-badge">Concurrency</span></div>
-                    </div>
-                </div>
-                <div class="explanation-deck">
-                    <strong>Answer Blueprint:</strong> When distributed pipeline tasks trigger runs against unified architecture environments, explicit lock handshakes are required to avoid race conditions. Utilizing shared S3 bucket object stores along with DynamoDB mutex databases flags down duplicate execution commands safely.
-                </div>
-                <div class="terminal-canvas">
-                    <div class="terminal-header">
-                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> providers.tf</div>
-                        <button class="copy-trigger" onclick="executeScraper(this, 'code-tf')"><i class="fa-regular fa-copy"></i> Copy Configuration</button>
-                    </div>
-                    <pre><code id="code-tf">terraform {
-  backend "s3" {
-    bucket         = "prod-enterprise-tfstate-matrix"
-    key            = "infrastructure/networking/core.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "terraform-state-lock-table"
+                <div class="qa-card">
+                    <h3>How do you lock infrastructure configuration updates?</h3>
+                    <div class="qa-answer">
+                        Concurrently applied state shifts are systematically locked through native API backends (like AWS DynamoDB or Azure Blob Storage lease maps) to fully avoid branch deployment drifts or resource corruption conflicts.
+<pre><code>terraform {
+  backend "azurerm" {
+    resource_group_name  = "remote-state-rg"
+    storage_account_name = "tfstatestorageacct"
+    container_name       = "corestate"
+    key                  = "prod.terraform.tfstate"
   }
 }</code></pre>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <!-- PAGE VIEW: Azure Core -->
+            <div id="azure-core" class="page-view">
+                <div class="doc-header">
+                    <h2>Azure Core Cloud Systems</h2>
+                </div>
+                <div class="qa-card">
+                    <h3>Explain Availability Sets vs Availability Zones inside Azure.</h3>
+                    <div class="qa-answer">
+                        Availability Sets protect applications against localized hardware disruptions within a single datacenter (Fault and Update domains). Availability Zones protect against an entire data center failure by placing instances across completely unique, physically isolated facility groups.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE VIEW: Azure DevOps -->
+            <div id="azure-devops" class="page-view">
+                <div class="doc-header">
+                    <h2>Azure DevOps Pipeline Systems</h2>
+                </div>
+                <div class="qa-card">
+                    <h3>What is the core difference between Microsoft-Hosted and Self-Hosted CI Agents?</h3>
+                    <div class="qa-answer">
+                        Microsoft-hosted agents run on clean, cloud-provisioned virtual machine instances that are completely destroyed post-execution. Self-hosted agents give you deep machine hardware control, allowing localized caching systems to reduce overall compile intervals.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE VIEW: Docker -->
+            <div id="docker" class="page-view">
+                <div class="doc-header">
+                    <h2>Docker & Container Mechanics</h2>
+                </div>
+                <div class="qa-card">
+                    <h3>How do Multi-Stage builds enhance container delivery lifecycles?</h3>
+                    <div class="qa-answer">
+                        By discarding runtime dependencies, bulky source compilers, and temporary development code modules inside primary layer steps, you preserve only production binaries inside clean downstream deployments. This radically decreases overall images footprints.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE VIEW: Kubernetes -->
+            <div id="kubernetes" class="page-view">
+                <div class="doc-header">
+                    <h2>Kubernetes Cluster Architecture</h2>
+                </div>
+                <div class="qa-card">
+                    <h3>What happens when a Pod fails its Liveness probe vs Readiness probe?</h3>
+                    <div class="qa-answer">
+                        If a <strong>Liveness Probe</strong> fails, the kubelet kills the container and initiates a target restart event loop. If a <strong>Readiness Probe</strong> fails, the control plane leaves the container intact but isolates the container from all active service end-points to block public client load drops.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE VIEW: Git -->
+            <div id="git" class="page-view">
+                <div class="doc-header">
+                    <h2>Git Version Control Workflows</h2>
+                </div>
+                <div class="qa-card">
+                    <h3>Explain the fundamental difference between Git Merge and Git Rebase.</h3>
+                    <div class="qa-answer">
+                        <code>git merge</code> ties divergent branch histories together with a brand new tracking commit. <code>git rebase</code> rewrites commits onto the tip of the destination target branch, creating a completely linear history.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE VIEW: Remaining Catch-All Blocks for Sidebar Nodes -->
+            <div id="azure-monitor" class="page-view"><div class="doc-header"><h2>Azure Monitor Telemetry</h2></div></div>
+            <div id="linux" class="page-view"><div class="doc-header"><h2>Linux Systems Engineering</h2></div></div>
+            <div id="behavioral" class="page-view"><div class="doc-header"><h2>Behavioral & HR Strategies</h2></div></div>
+            <div id="miscellaneous" class="page-view"><div class="doc-header"><h2>Miscellaneous Architectures</h2></div></div>
+            <div id="finops" class="page-view"><div class="doc-header"><h2>FinOps & Cloud Cost Optimization</h2></div></div>
+
+        </div>
     </main>
 
+    <!-- Navigation Mechanics Script Layer -->
     <script>
-        function navigateWorkspace(event, destinationViewId) {
-            // Drop current focus highlights from sidebar links
-            document.querySelectorAll('.tree-node').forEach(node => {
-                node.classList.remove('active');
+        function switchPage(event, pageId) {
+            // Drop current focus highlights across sidebar targets
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
             });
             
-            // Assign active class to selected menu item
-            event.currentTarget.classList.add('active');
+            // Highlight the clicked side menu link
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else {
+                // Handle fallback mapping targets safely
+                const matchLink = document.querySelector(`[onclick*='${pageId}']`);
+                if(matchLink) matchLink.classList.add('active');
+            }
             
-            // Hide all tab workspace contents
-            document.querySelectorAll('.workspace-view').forEach(view => {
+            // Hide all tab views completely
+            document.querySelectorAll('.page-view').forEach(view => {
                 view.classList.remove('active');
             });
             
-            // Smoothly render chosen page view content
-            document.getElementById(destinationViewId).classList.add('active');
+            // Activate selected workspace page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Handle mobile auto-collapse adjustments
+            document.getElementById('sidebar').classList.remove('open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function executeScraper(buttonElement, codeElementId) {
-            const codeString = document.getElementById(codeElementId).innerText;
-            navigator.clipboard.writeText(codeString);
-            
-            // Visual success state mutation loop
-            const persistentState = buttonElement.innerHTML;
-            buttonElement.innerHTML = '<i class="fa-solid fa-check" style="color: var(--amber-glow)"></i> Copied Output!';
-            
-            setTimeout(() => {
-                buttonElement.innerHTML = persistentState;
-            }, 2200);
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
         }
     </script>
 </body>
