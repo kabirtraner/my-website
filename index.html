@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps SRE Interview Manual</title>
+    <title>DevOps & SRE Interview Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -16,7 +16,7 @@
             --text-main: #f5f5f4;
             --text-muted: #a8a29e;
             
-            /* Custom DevOps Amber/Orange Theme Accent Layers */
+            /* DevOps Amber/Orange Theme Accent Palette */
             --amber-glow: #f97316;
             --amber-hover: #fb923c;
             --amber-bg-opaque: rgba(249, 115, 22, 0.08);
@@ -37,7 +37,7 @@
             min-height: 100vh;
         }
 
-        /* Sidebar Navigation Deck */
+        /* Responsive Sidebar Tree Navigation */
         aside {
             width: 330px;
             background-color: var(--bg-sidebar);
@@ -50,12 +50,12 @@
         }
 
         .brand-identity {
-            padding: 2.5rem 1.5rem;
+            padding: 2.25rem 1.5rem;
             border-bottom: 1px solid var(--border);
         }
 
         .brand-identity h1 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: -0.03em;
             color: var(--text-main);
@@ -81,14 +81,14 @@
             text-transform: uppercase;
             color: var(--text-muted);
             letter-spacing: 0.12em;
-            margin: 1.75rem 0 0.5rem 0.5rem;
+            margin: 1.5rem 0 0.5rem 0.5rem;
         }
 
         .tree-node {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.8rem 1rem;
+            padding: 0.75rem 1rem;
             color: var(--text-muted);
             text-decoration: none;
             border-radius: 0.5rem;
@@ -127,12 +127,23 @@
 
         .workspace-view.active {
             display: block;
-            animation: paneSlide 0.35s ease-out;
+            animation: paneSlide 0.3s ease-out;
         }
 
         @keyframes paneSlide {
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Topic Heading Styling */
+        .topic-header h2 {
+            font-size: 2rem; 
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .topic-header p {
+            color: var(--text-muted);
         }
 
         /* Question Blueprint Cards */
@@ -141,11 +152,12 @@
             border: 1px solid var(--border);
             border-radius: 0.75rem;
             overflow: hidden;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .problem-card-header {
-            padding: 1.75rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -155,7 +167,7 @@
         .badge-array {
             display: flex;
             gap: 0.5rem;
-            margin-top: 0.6rem;
+            margin-top: 0.5rem;
         }
 
         .pill-badge {
@@ -169,11 +181,20 @@
         }
 
         .explanation-deck {
-            padding: 1.75rem;
+            padding: 1.5rem;
             background-color: rgba(255, 255, 255, 0.01);
             border-bottom: 1px solid var(--border);
             line-height: 1.65;
             color: #d6d3d1;
+        }
+
+        .explanation-deck ul {
+            margin-top: 0.75rem;
+            margin-left: 1.25rem;
+        }
+
+        .explanation-deck li {
+            margin-bottom: 0.4rem;
         }
 
         /* Code Terminal Canvas Panels */
@@ -183,7 +204,7 @@
 
         .terminal-header {
             background-color: #141210;
-            padding: 0.85rem 1.75rem;
+            padding: 0.75rem 1.5rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -203,7 +224,7 @@
             background: none;
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 0.4rem 0.85rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 0.375rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
@@ -218,7 +239,7 @@
         }
 
         pre {
-            padding: 1.75rem;
+            padding: 1.5rem;
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -230,7 +251,7 @@
         @media (max-width: 992px) {
             body { flex-direction: column; }
             aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
-            main { margin-left: 0; padding: 1.75rem; }
+            main { margin-left: 0; padding: 1.5rem; }
         }
     </style>
 </head>
@@ -238,24 +259,40 @@
 
     <aside>
         <div class="brand-identity">
-            <h1>DevOps Guide</h1>
-            <p><i class="fa-solid fa-fire" style="color:var(--amber-glow)"></i> theme_profile: orange</p>
+            <h1>DevOps System Guide</h1>
+            <p><i class="fa-solid fa-fire" style="color:var(--amber-glow)"></i> branch: orange-theme</p>
         </div>
         
         <nav class="navigation-tree">
-            <div class="tree-category">Version Control</div>
-            <div class="tree-node active" onclick="navigateWorkspace(event, 'git-hook')">
-                <span><i class="fa-brands fa-git-alt"></i> Pre-Commit Hooks</span>
+            <div class="tree-category">Linux Systems</div>
+            <div class="tree-node active" onclick="navigateWorkspace(event, 'linux-boot')">
+                <span><i class="fa-solid fa-terminal"></i> Boot Process</span>
                 <span class="pulse-beacon"></span>
             </div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'git-stash')">
-                <span><i class="fa-solid fa-box-archive"></i> Git Stash Workflow</span>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'linux-load')">
+                <span><i class="fa-solid fa-microchip"></i> System Load Metrics</span>
                 <span class="pulse-beacon"></span>
             </div>
             
-            <div class="tree-category">Cloud Infrastructure</div>
-            <div class="tree-node" onclick="navigateWorkspace(event, 'tf-secure')">
-                <span><i class="fa-solid fa-cloud-lock"></i> S3 Bucket Locking</span>
+            <div class="tree-category">Version Control & Git</div>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'git-hooks')">
+                <span><i class="fa-brands fa-git-alt"></i> Commit Verification Hooks</span>
+                <span class="pulse-beacon"></span>
+            </div>
+            
+            <div class="tree-category">Containers & Orchestration</div>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'docker-optimization')">
+                <span><i class="fa-brands fa-docker"></i> Layer Optimization</span>
+                <span class="pulse-beacon"></span>
+            </div>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'k8s-networking')">
+                <span><i class="fa-solid fa-network-wired"></i> Pod Networking & DNS</span>
+                <span class="pulse-beacon"></span>
+            </div>
+
+            <div class="tree-category">Infrastructure As Code</div>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'tf-backends')">
+                <span><i class="fa-solid fa-cloud"></i> Remote State Storage</span>
                 <span class="pulse-beacon"></span>
             </div>
         </nav>
@@ -263,18 +300,246 @@
 
     <main>
 
-        <div id="git-hook" class="workspace-view active">
-            <div>
-                <h2 style="font-size: 2.2rem; letter-spacing: -0.03em;">Git Architecture Strategy</h2>
-                <p style="color: var(--text-muted); margin-top: 0.3rem;">Core Focus: Preventing Secrets Leaks natively inside Local Environments.</p>
+        <div id="linux-boot" class="workspace-view active">
+            <div class="topic-header">
+                <h2>Linux Kernel & OS Core</h2>
+                <p>Core Topic: System Initialization Runlevels</p>
             </div>
             
             <div class="problem-card">
                 <div class="problem-card-header">
                     <div>
-                        <h3 style="font-size: 1.25rem; font-weight:600;">What is a Pre-Commit Hook?</h3>
+                        <h3>Explain the standard high-level Linux Boot Process step-by-step.</h3>
+                        <div class="badge-array"><span class="pill-badge">Kernel Space</span><span class="pill-badge">SysInit</span></div>
+                    </div>
+                </div>
+                <div class="explanation-deck">
+                    <strong>Answer Blueprint:</strong>
+                    <ul>
+                        <li><strong>BIOS/UEFI:</strong> Executes Power-On Self-Test (POST) and initializes hardware settings from the Master Boot Record (MBR).</li>
+                        <li><strong>GRUB Bootloader:</strong> Loads the designated Linux kernel image and the temporary virtual file system (initramfs) into memory.</li>
+                        <li><strong>Kernel Stage:</strong> Initializes system root drivers, starts storage mounts, and invokes the primary system initialization process.</li>
+                        <li><strong>systemd / Init:</strong> Spawns daemon trees based on defined target milestones (e.g., multi-user graphical vs command console networks).</li>
+                    </ul>
+                </div>
+                <div class="terminal-canvas">
+                    <div class="terminal-header">
+                        <div class="terminal-filename"><i class="fa-solid fa-gears" style="color: var(--amber-glow);"></i> console-logs.sh</div>
+                        <button class="copy-trigger" onclick="executeScraper(this, 'code-boot')"><i class="fa-regular fa-copy"></i> Copy Output</button>
+                    </div>
+                    <pre><code id="code-boot"># Inspect system initialization run metrics via terminal commands
+dmesg | grep -i "kernel initialized"
+
+# View system active operational target parameters
+systemctl get-default
+# Output: multi-user.target</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="linux-load" class="workspace-view">
+            <div class="topic-header">
+                <h2>Performance Monitoring & Diagnostics</h2>
+                <p>Core Topic: Decoding System CPU Contention Anomalies</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-card-header">
+                    <div>
+                        <h3>What do the three averages represent in a System Load Metric?</h3>
+                        <div class="badge-array"><span class="pill-badge">Performance</span><span class="pill-badge">Debugging</span></div>
+                    </div>
+                </div>
+                <div class="explanation-deck">
+                    <strong>Answer Blueprint:</strong> The load numbers indicate the average count of active executable processes waiting in the system processor pipeline over the last <strong>1 minute</strong>, <strong>5 minutes</strong>, and <strong>15 minutes</strong> respectively. High averages paired with low CPU utilization points to deep disk I/O network bottlenecks.
+                </div>
+                <div class="terminal-canvas">
+                    <div class="terminal-header">
+                        <div class="terminal-filename"><i class="fa-solid fa-chart-line" style="color: var(--amber-glow);"></i> telemetry-check.sh</div>
+                        <button class="copy-trigger" onclick="executeScraper(this, 'code-load')"><i class="fa-regular fa-copy"></i> Copy Snippet</button>
+                    </div>
+                    <pre><code id="code-load"># Display real-time execution load factors directly
+uptime
+# Output format: load average: 0.45, 0.85, 1.20
+
+# Query underlying hardware processor thread layout limits
+nproc</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="git-hooks" class="workspace-view">
+            <div class="topic-header">
+                <h2>Version Control Strategies</h2>
+                <p>Core Topic: Pre-Commit Automation Guardrails</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-card-header">
+                    <div>
+                        <h3>How do you automatically intercept local commits to block raw token leaks?</h3>
                         <div class="badge-array"><span class="pill-badge">Git Core</span><span class="pill-badge">Security Audit</span></div>
                     </div>
                 </div>
                 <div class="explanation-deck">
-                    <strong>Answer:</strong> A pre-commit hook is
+                    <strong>Answer Blueprint:</strong> Implement a local pre-commit regex scanner engine. These configuration maps hook cleanly into hidden folder structures (`.git/hooks/pre-commit`), parsing tracking patches for key sequences before any text updates commit to codebases.
+                </div>
+                <div class="terminal-canvas">
+                    <div class="terminal-header">
+                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> pre-commit</div>
+                        <button class="copy-trigger" onclick="executeScraper(this, 'code-hooks')"><i class="fa-regular fa-copy"></i> Copy Snippet</button>
+                    </div>
+                    <pre><code id="code-hooks">#!/bin/sh
+# Intercept staging modifications for security validation
+if git diff --cached | grep -E 'aws_secret_access_key|token|passwd'; then
+    echo "❌ SECURITY EXCEPTION: Plaintext token pattern found inside patch history."
+    exit 1
+fi
+echo "✅ Audit passed successfully."</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="docker-optimization" class="workspace-view">
+            <div class="topic-header">
+                <h2>Container Architecture Management</h2>
+                <p>Core Topic: Stripping Compilation Footprints</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-card-header">
+                    <div>
+                        <h3>How do you safely shrink continuous build delivery images under compliance rules?</h3>
+                        <div class="badge-array"><span class="pill-badge">Docker</span><span class="pill-badge">Layer Caching</span></div>
+                    </div>
+                </div>
+                <div class="explanation-deck">
+                    <strong>Answer Blueprint:</strong> Structure multi-stage Dockerfiles. Separate target environments explicitly: encapsulate tooling configurations inside temporary compiler layers, pulling down compiled target packages into lightweight, security-hardened `alpine` production shells.
+                </div>
+                <div class="terminal-canvas">
+                    <div class="terminal-header">
+                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> Dockerfile</div>
+                        <button class="copy-trigger" onclick="executeScraper(this, 'code-docker')"><i class="fa-regular fa-copy"></i> Copy Manifest</button>
+                    </div>
+                    <pre><code id="code-docker"># Stage 1: Build & Compile Binaries
+FROM golang:1.21-alpine AS engine-builder
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 go build -o system-service .
+
+# Stage 2: Hardened Runtime Layer
+FROM alpine:3.19
+WORKDIR /app
+COPY --from=engine-builder /src/system-service .
+USER 1001
+ENTRYPOINT ["./system-service"]</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="k8s-networking" class="workspace-view">
+            <div class="topic-header">
+                <h2>Cloud Orchestration Engineering</h2>
+                <p>Core Topic: Pod Routing Planes & CoreDNS Resolution</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-card-header">
+                    <div>
+                        <h3>Explain how internal service discovery paths operate inside a Cluster.</h3>
+                        <div class="badge-array"><span class="pill-badge">Networking</span><span class="pill-badge">Kubernetes Core</span></div>
+                    </div>
+                </div>
+                <div class="explanation-deck">
+                    <strong>Answer Blueprint:</strong> Every Service created gets an internal cluster DNS record mapping back to its virtual ip footprint via `kube-dns` or `CoreDNS`. Network paths route directly following structured syntax constraints: <code>[service-name].[namespace].svc.cluster.local</code>.
+                </div>
+                <div class="terminal-canvas">
+                    <div class="terminal-header">
+                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> network-service.yaml</div>
+                        <button class="copy-trigger" onclick="executeScraper(this, 'code-k8s')"><i class="fa-regular fa-copy"></i> Copy Manifest</button>
+                    </div>
+                    <pre><code id="code-k8s">apiVersion: v1
+kind: Service
+metadata:
+  name: billing-database-service
+  namespace: data-tier
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: secure-postgres-db</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="tf-backends" class="workspace-view">
+            <div class="topic-header">
+                <h2>Infrastructure as Code (IaC)</h2>
+                <p>Core Topic: Concurrent State Synchronization Systems</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-card-header">
+                    <div>
+                        <h3>Why is remote state locking mandatory for corporate cloud operations?</h3>
+                        <div class="badge-array"><span class="pill-badge">Terraform</span><span class="pill-badge">Concurrency</span></div>
+                    </div>
+                </div>
+                <div class="explanation-deck">
+                    <strong>Answer Blueprint:</strong> When distributed pipeline tasks trigger runs against unified architecture environments, explicit lock handshakes are required to avoid race conditions. Utilizing shared S3 bucket object stores along with DynamoDB mutex databases flags down duplicate execution commands safely.
+                </div>
+                <div class="terminal-canvas">
+                    <div class="terminal-header">
+                        <div class="terminal-filename"><i class="fa-regular fa-file-code" style="color: var(--amber-glow);"></i> providers.tf</div>
+                        <button class="copy-trigger" onclick="executeScraper(this, 'code-tf')"><i class="fa-regular fa-copy"></i> Copy Configuration</button>
+                    </div>
+                    <pre><code id="code-tf">terraform {
+  backend "s3" {
+    bucket         = "prod-enterprise-tfstate-matrix"
+    key            = "infrastructure/networking/core.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-state-lock-table"
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function navigateWorkspace(event, destinationViewId) {
+            // Drop current focus highlights from sidebar links
+            document.querySelectorAll('.tree-node').forEach(node => {
+                node.classList.remove('active');
+            });
+            
+            // Assign active class to selected menu item
+            event.currentTarget.classList.add('active');
+            
+            // Hide all tab workspace contents
+            document.querySelectorAll('.workspace-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Smoothly render chosen page view content
+            document.getElementById(destinationViewId).classList.add('active');
+        }
+
+        function executeScraper(buttonElement, codeElementId) {
+            const codeString = document.getElementById(codeElementId).innerText;
+            navigator.clipboard.writeText(codeString);
+            
+            // Visual success state mutation loop
+            const persistentState = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fa-solid fa-check" style="color: var(--amber-glow)"></i> Copied Output!';
+            
+            setTimeout(() => {
+                buttonElement.innerHTML = persistentState;
+            }, 2200);
+        }
+    </script>
+</body>
+</html>
