@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Interview Portfolio</title>
+    <!-- Google Fonts & FontAwesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #7dd3fc;
+            --code-bg: #0b0f19;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .profile-section {
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-section h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-section p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .category-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-links li a:hover, .nav-links li.active a {
+            color: var(--text-main);
+            background-color: rgba(56, 189, 248, 0.1);
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Main Content Area */
+        main {
+            margin-left: 300px;
+            flex-grow: 1;
+            padding: 3rem;
+            max-width: 1000px;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .difficulty.medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .difficulty.easy { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .difficulty.hard { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .problem-description {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .problem-description h3 {
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        /* Code Block container */
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .copy-btn:hover {
+            color: var(--accent);
+        }
+
+        pre {
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            aside { width: 100%; height: auto; position: relative; }
+            main { margin-left: 0; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="profile-section">
+            <h1>Code Journal</h1>
+            <p>My Interview Solutions</p>
+        </div>
+        <ul class="nav-links">
+            <div class="category-title">Arrays & Strings</div>
+            <li class="active"><a href="#"><i class="fa-solid fa-code"></i> Two Sum</a></li>
+            <li><a href="#"><i class="fa-solid fa-code"></i> Longest Substring</a></li>
+            
+            <div class="category-title">Trees & Graphs</div>
+            <li><a href="#"><i class="fa-solid fa-network-wired"></i> Invert Binary Tree</a></li>
+            <li><a href="#"><i class="fa-solid fa-network-wired"></i> Number of Islands</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Problem Display -->
+    <main>
+        <header>
+            <div>
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">1. Two Sum</h2>
+                <p style="color: var(--text-muted);">LeetCode #1</p>
+            </div>
+            <span class="difficulty easy">Easy</span>
+        </header>
+
+        <section class="problem-description">
+            <h3>Problem Statement</h3>
+            <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.</p>
+            <p style="margin-top: 0.5rem;">You may assume that each input would have exactly one solution, and you may not use the same element twice.</p>
+        </section>
+
+        <section class="code-container">
+            <div class="code-header">
+                <span><i class="fa-brands fa-python"></i> solution.py</span>
+                <button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-block">def twoSum(nums: list[int], target: int) -> list[int]:
+    hash_map = {} # val -> index
+    
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in hash_map:
+            return [hash_map[diff], i]
+        hash_map[num] = i
+        
+    return []</code></pre>
+        </section>
+    </main>
+
+    <script>
+        function copyCode() {
+            const code = document.getElementById('code-block').innerText;
+            navigator.clipboard.writeText(code);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
