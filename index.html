@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Technical Interview Sandbox</title>
-    <!-- Google Fonts & FontAwesome Icons -->
+    <title>DevOps SRE Interview Manual</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-darken: #060911;
-            --bg-surface: #0d1321;
-            --bg-panel: #161f33;
-            --border: #263554;
-            --text-main: #f1f5f9;
-            --text-secondary: #94a3b8;
+            --bg-base: #0c0a09;
+            --bg-sidebar: #1c1917;
+            --bg-card: #262220;
+            --border: #443e3a;
+            --text-main: #f5f5f4;
+            --text-muted: #a8a29e;
             
-            /* Status Accents */
-            --neon-blue: #38bdf8;
-            --neon-green: #4ade80;
-            --neon-purple: #c084fc;
-            --code-bg: #030712;
+            /* Custom DevOps Amber/Orange Theme Accent Layers */
+            --amber-glow: #f97316;
+            --amber-hover: #fb923c;
+            --amber-bg-opaque: rgba(249, 115, 22, 0.08);
+            --code-terminal: #020202;
         }
 
         * {
@@ -32,332 +31,250 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-darken);
+            background-color: var(--bg-base);
             color: var(--text-main);
-            line-height: 1.6;
-            padding: 2rem 1rem;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Portfolio Header Matrix */
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--bg-surface), #111a2e);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-        }
-
-        header h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .badge-row {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-            font-family: 'JetBrains Mono', monospace;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation Deck */
+        aside {
+            width: 330px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .brand-identity {
+            padding: 2.5rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-identity h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+        }
+
+        .brand-identity p {
             font-size: 0.8rem;
+            color: var(--amber-glow);
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 0.35rem;
         }
 
-        .badge {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--neon-blue);
-            padding: 0.25rem 0.75rem;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 2rem;
+        .navigation-tree {
+            list-style: none;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            flex-grow: 1;
         }
 
-        /* Accordion Structure */
-        .qa-card {
-            background-color: var(--bg-surface);
+        .tree-category {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            margin: 1.75rem 0 0.5rem 0.5rem;
+        }
+
+        .tree-node {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 0.3rem;
+            cursor: pointer;
+        }
+
+        .tree-node:hover, .tree-node.active {
+            color: var(--text-main);
+            background-color: var(--amber-bg-opaque);
+            border-left: 3px solid var(--amber-glow);
+        }
+
+        .pulse-beacon {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--amber-glow);
+            box-shadow: 0 0 10px var(--amber-glow);
+        }
+
+        /* Portfolio Engineering Main Content Frame */
+        main {
+            margin-left: 330px;
+            flex-grow: 1;
+            padding: 3.5rem;
+            max-width: 1150px;
+        }
+
+        .workspace-view {
+            display: none;
+        }
+
+        .workspace-view.active {
+            display: block;
+            animation: paneSlide 0.35s ease-out;
+        }
+
+        @keyframes paneSlide {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Question Blueprint Cards */
+        .problem-card {
+            background-color: var(--bg-sidebar);
             border: 1px solid var(--border);
             border-radius: 0.75rem;
-            margin-bottom: 1rem;
             overflow: hidden;
-            transition: border-color 0.2s;
+            margin-top: 2rem;
         }
 
-        .qa-card:hover {
-            border-color: var(--neon-blue);
-        }
-
-        /* Clickable Header Area */
-        .qa-trigger {
-            width: 100%;
-            padding: 1.5rem;
-            background: none;
-            border: none;
-            color: var(--text-main);
-            text-align: left;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .question-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .index-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--neon-purple);
-            background: rgba(192, 132, 252, 0.1);
-            padding: 0.15rem 0.5rem;
-            border-radius: 0.25rem;
-        }
-
-        .chevron {
-            color: var(--text-secondary);
-            transition: transform 0.3s ease;
-        }
-
-        /* Collapsible Section Container */
-        .qa-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
-            background-color: rgba(0, 0, 0, 0.15);
-        }
-
-        /* Expanded State (Managed by JavaScript class toggles) */
-        .qa-card.open .qa-content {
-            max-height: 2000px; /* Arbitrary large limit to accommodate code */
-            transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
-        }
-
-        .qa-card.open .chevron {
-            transform: rotate(180deg);
-            color: var(--neon-blue);
-        }
-
-        .answer-body {
-            padding: 0 1.5rem 1.5rem 1.5rem;
-            border-top: 1px solid rgba(38, 53, 84, 0.4);
-        }
-
-        .concept-text {
-            color: var(--text-secondary);
-            margin: 1.25rem 0;
-            font-size: 0.95rem;
-        }
-
-        .concept-text strong {
-            color: var(--text-main);
-        }
-
-        /* Code Window Block styling */
-        .ide-frame {
-            background-color: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-
-        .ide-bar {
-            background-color: #02040a;
-            padding: 0.6rem 1.2rem;
+        .problem-card-header {
+            padding: 1.75rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .badge-array {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .pill-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            background-color: rgba(249, 115, 22, 0.05);
+            color: var(--amber-hover);
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.25rem;
+            border: 1px solid rgba(249, 115, 22, 0.15);
+        }
+
+        .explanation-deck {
+            padding: 1.75rem;
+            background-color: rgba(255, 255, 255, 0.01);
+            border-bottom: 1px solid var(--border);
+            line-height: 1.65;
+            color: #d6d3d1;
+        }
+
+        /* Code Terminal Canvas Panels */
+        .terminal-canvas {
+            background-color: var(--code-terminal);
+        }
+
+        .terminal-header {
+            background-color: #141210;
+            padding: 0.85rem 1.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-filename {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .copy-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.8rem;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.6rem;
         }
 
-        .copy-btn:hover {
-            color: var(--neon-green);
+        .copy-trigger {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.4rem 0.85rem;
+            border-radius: 0.375rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-trigger:hover {
+            color: var(--text-main);
+            background-color: var(--bg-card);
+            border-color: var(--amber-glow);
         }
 
         pre {
-            padding: 1.25rem;
+            padding: 1.75rem;
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
-            color: #e2e8f0;
+            line-height: 1.6;
+            color: #e7e5e4;
+        }
+
+        /* Responsive Breakpoint Matrix */
+        @media (max-width: 992px) {
+            body { flex-direction: column; }
+            aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); }
+            main { margin-left: 0; padding: 1.75rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Dashboard Header Summary -->
-        <header>
-            <h1>DevOps SRE Interview Engine</h1>
-            <p>Production Architecture & Infrastructure Automation Blueprints</p>
-            <div class="badge-row">
-                <span class="badge"><i class="fa-solid fa-layer-group"></i> Kubernetes</span>
-                <span class="badge"><i class="fa-solid fa-infinity"></i> CI/CD Pipeline</span>
-                <span class="badge"><i class="fa-solid fa-cloud-sun"></i> Terraform IaC</span>
-            </div>
-        </header>
-
-        <!-- Question Element 1 -->
-        <div class="qa-card">
-            <button class="qa-trigger" onclick="toggleAccordion(this)">
-                <div class="question-meta">
-                    <span class="index-tag">Q-01</span>
-                    <span>How do you handle zero-downtime microservice transitions using Kubernetes?</span>
-                </div>
-                <i class="fa-solid fa-chevron-down chevron"></i>
-            </button>
-            <div class="qa-content">
-                <div class="answer-body">
-                    <div class="concept-text">
-                        <strong>Architectural Strategy:</strong> Leverage an explicit rolling deployment schema paired with <code>readinessProbes</code>. This ensures traffic routing adjustments bypass freshly spawned replica nodes until internal services finish initialization, terminating legacy containers safely.
-                    </div>
-                    <div class="ide-frame">
-                        <div class="ide-bar">
-                            <span><i class="fa-solid fa-file-code" style="color: var(--neon-blue);"></i> deployment.yaml</span>
-                            <button class="copy-btn" onclick="copyCodeBlock(this, 'snippet-k8s')">
-                                <i class="fa-regular fa-copy"></i> Copy Manifest
-                            </button>
-                        </div>
-                        <pre><code id="snippet-k8s">apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: dynamic-api-gateway
-spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-  template:
-    spec:
-      containers:
-      - name: gateway-service
-        image: internal-registry/gateway:v2.4.0
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10</code></pre>
-                    </div>
-                </div>
-            </div>
+    <aside>
+        <div class="brand-identity">
+            <h1>DevOps Guide</h1>
+            <p><i class="fa-solid fa-fire" style="color:var(--amber-glow)"></i> theme_profile: orange</p>
         </div>
-
-        <!-- Question Element 2 -->
-        <div class="qa-card">
-            <button class="qa-trigger" onclick="toggleAccordion(this)">
-                <div class="question-meta">
-                    <span class="index-tag">Q-02</span>
-                    <span>Write a resilient modular Terraform block enforcing unique secure bucket configurations.</span>
-                </div>
-                <i class="fa-solid fa-chevron-down chevron"></i>
-            </button>
-            <div class="qa-content">
-                <div class="answer-body">
-                    <div class="concept-text">
-                        <strong>Architectural Strategy:</strong> Build scalable infrastructure states. This module declares granular cryptographic compliance controls alongside public access block locks by utilizing explicit security parameters inside native HCL providers.
-                    </div>
-                    <div class="ide-frame">
-                        <div class="ide-bar">
-                            <span><i class="fa-solid fa-file-code" style="color: var(--neon-purple);"></i> main.tf</span>
-                            <button class="copy-btn" onclick="copyCodeBlock(this, 'snippet-tf')">
-                                <i class="fa-regular fa-copy"></i> Copy Block
-                            </button>
-                        </div>
-                        <pre><code id="snippet-tf">resource "aws_s3_bucket" "secure_assets" {
-  bucket        = "production-isolated-data-store"
-  force_destroy = false
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "kms_lock" {
-  bucket = aws_s3_bucket.secure_assets.id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "aws:kms"
-    }
-  }
-}
-
-resource "aws_s3_bucket_public_access_block" "hardened_walls" {
-  bucket = aws_s3_bucket.secure_assets.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}</code></pre>
-                    </div>
-                </div>
+        
+        <nav class="navigation-tree">
+            <div class="tree-category">Version Control</div>
+            <div class="tree-node active" onclick="navigateWorkspace(event, 'git-hook')">
+                <span><i class="fa-brands fa-git-alt"></i> Pre-Commit Hooks</span>
+                <span class="pulse-beacon"></span>
             </div>
-        </div>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'git-stash')">
+                <span><i class="fa-solid fa-box-archive"></i> Git Stash Workflow</span>
+                <span class="pulse-beacon"></span>
+            </div>
+            
+            <div class="tree-category">Cloud Infrastructure</div>
+            <div class="tree-node" onclick="navigateWorkspace(event, 'tf-secure')">
+                <span><i class="fa-solid fa-cloud-lock"></i> S3 Bucket Locking</span>
+                <span class="pulse-beacon"></span>
+            </div>
+        </nav>
+    </aside>
 
-    </div>
+    <main>
 
-    <!-- Interface Logic Controllers -->
-    <script>
-        function toggleAccordion(button) {
-            const currentCard = button.parentElement;
+        <div id="git-hook" class="workspace-view active">
+            <div>
+                <h2 style="font-size: 2.2rem; letter-spacing: -0.03em;">Git Architecture Strategy</h2>
+                <p style="color: var(--text-muted); margin-top: 0.3rem;">Core Focus: Preventing Secrets Leaks natively inside Local Environments.</p>
+            </div>
             
-            // Check if item is already active
-            const isOpen = currentCard.classList.contains('open');
-            
-            // Close all currently open cards to keep it tidy
-            document.querySelectorAll('.qa-card').forEach(card => {
-                card.classList.remove('open');
-            });
-            
-            // Toggle active component context
-            if (!isOpen) {
-                currentCard.classList.add('open');
-            }
-        }
-
-        function copyCodeBlock(btnElement, sourceId) {
-            const snippetText = document.getElementById(sourceId).innerText;
-            navigator.clipboard.writeText(snippetText);
-            
-            // Success Feedback State Transformation
-            const originalContents = btnElement.innerHTML;
-            btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-green)"></i> Securely Copied!';
-            
-            setTimeout(() => {
-                btnElement.innerHTML = originalContents;
-            }, 2000);
-        }
-    </script>
-</body>
-</html>
+            <div class="problem-card">
+                <div class="problem-card-header">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight:600;">What is a Pre-Commit Hook?</h3>
+                        <div class="badge-array"><span class="pill-badge">Git Core</span><span class="pill-badge">Security Audit</span></div>
+                    </div>
+                </div>
+                <div class="explanation-deck">
+                    <strong>Answer:</strong> A pre-commit hook is
