@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coding Interview Portfolio</title>
-    <!-- Google Fonts & FontAwesome for Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <title>DevOps & SRE Interview Engineering Hub</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --sidebar-bg: #1e293b;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #7dd3fc;
-            --code-bg: #0b0f19;
-            --border: #334155;
+            --bg-main: #090d16;
+            --bg-surface: #111827;
+            --bg-card: #1f2937;
+            --border-color: #2e3b4e;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            
+            /* DevOps Theme Status Colors */
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-amber: #f59e0b;
+            --code-bg: #05070c;
         }
 
         * {
@@ -28,227 +31,361 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
             display: flex;
             min-height: 100vh;
         }
 
         /* Sidebar Navigation */
         aside {
-            width: 300px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
+            width: 320px;
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
+            z-index: 10;
         }
 
-        .profile-section {
-            padding: 2rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
+        .brand-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .profile-section h1 {
-            font-size: 1.25rem;
+        .brand-header i {
+            color: var(--accent-green);
+            font-size: 1.5rem;
+        }
+
+        .brand-header h1 {
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
         }
 
-        .profile-section p {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        .nav-links {
+        .nav-menu {
             list-style: none;
-            padding: 1.5rem;
+            padding: 1.5rem 1rem;
             overflow-y: auto;
             flex-grow: 1;
         }
 
-        .category-title {
-            font-size: 0.75rem;
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin: 1.5rem 0 0.5rem 0;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            margin: 1.5rem 0 0.5rem 0.5rem;
         }
 
-        .nav-links li a {
+        .nav-item a {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            justify-content: space-between;
             padding: 0.75rem 1rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            border-radius: 0.375rem;
             font-size: 0.9rem;
+            transition: all 0.2s ease;
+            margin-bottom: 0.25rem;
         }
 
-        .nav-links li a:hover, .nav-links li.active a {
-            color: var(--text-main);
-            background-color: rgba(56, 189, 248, 0.1);
-            border-left: 3px solid var(--accent);
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--accent-blue);
         }
 
-        /* Main Content Area */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+        }
+
+        /* Main Workspace Content Area */
         main {
-            margin-left: 300px;
+            margin-left: 320px;
             flex-grow: 1;
             padding: 3rem;
-            max-width: 1000px;
+            max-width: 1200px;
         }
 
-        header {
-            margin-bottom: 2.5rem;
+        /* Metrics / System Dashboard Row */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .difficulty {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
+        .metric-card span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
             text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .difficulty.medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .difficulty.easy { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-        .difficulty.hard { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-
-        .problem-description {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+        .metric-card div {
+            font-size: 1.75rem;
+            font-weight: 700;
         }
 
-        .problem-description h3 {
-            margin-bottom: 0.75rem;
-            color: var(--accent);
-        }
-
-        /* Code Block container */
-        .code-container {
-            background-color: var(--code-bg);
-            border: 1px solid var(--border);
+        /* Code & Content Showcase Blocks */
+        .problem-wrapper {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
             border-radius: 0.75rem;
             overflow: hidden;
+            margin-bottom: 2.5rem;
         }
 
-        .code-header {
-            background-color: rgba(255, 255, 255, 0.03);
+        .problem-meta {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .problem-title h2 {
+            font-size: 1.35rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .explanation-panel {
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.01);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .explanation-panel code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--bg-card);
+            padding: 0.15rem 0.35rem;
+            border-radius: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        /* IDE Style Coding Windows */
+        .terminal-container {
+            background-color: var(--code-bg);
+        }
+
+        .terminal-bar {
+            background-color: #0c101a;
             padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
         }
 
-        .copy-btn {
+        .file-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-button {
             background: none;
-            border: none;
-            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.375rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: all 0.2s ease;
         }
 
-        .copy-btn:hover {
-            color: var(--accent);
+        .action-button:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-card);
         }
 
         pre {
             padding: 1.5rem;
             overflow-x: auto;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
             line-height: 1.5;
-            color: #e2e8f0;
+            color: #cbd5e1;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* Responsive Viewports */
+        @media (max-width: 992px) {
             body { flex-direction: column; }
-            aside { width: 100%; height: auto; position: relative; }
+            aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); }
             main { margin-left: 0; padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar Dashboard Controls -->
     <aside>
-        <div class="profile-section">
-            <h1>Code Journal</h1>
-            <p>My Interview Solutions</p>
+        <div class="brand-header">
+            <i class="fa-solid fa-terminal"></i>
+            <h1>DevOps.OpsHub</h1>
         </div>
-        <ul class="nav-links">
-            <div class="category-title">Arrays & Strings</div>
-            <li class="active"><a href="#"><i class="fa-solid fa-code"></i> Two Sum</a></li>
-            <li><a href="#"><i class="fa-solid fa-code"></i> Longest Substring</a></li>
+        
+        <ul class="nav-menu">
+            <div class="section-label">CI/CD Pipelines</div>
+            <li class="nav-item active">
+                <a href="#github-actions">
+                    <span><i class="fa-brands fa-github"></i> GitHub Matrix Build</span>
+                    <span class="status-dot"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#gitlab-conditional">
+                    <span><i class="fa-brands fa-gitlab"></i> GitLab Dynamic Anchors</span>
+                    <span class="status-dot"></span>
+                </a>
+            </li>
             
-            <div class="category-title">Trees & Graphs</div>
-            <li><a href="#"><i class="fa-solid fa-network-wired"></i> Invert Binary Tree</a></li>
-            <li><a href="#"><i class="fa-solid fa-network-wired"></i> Number of Islands</a></li>
+            <div class="section-label">Infrastructure As Code</div>
+            <li class="nav-item">
+                <a href="#tf-loops">
+                    <span><i class="fa-solid fa-cloud"></i> Terraform dynamic_blocks</span>
+                    <span class="status-dot"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#k8s-ingress">
+                    <span><i class="fa-solid fa-network-wired"></i> K8s Canary Ingress</span>
+                    <span class="status-dot"></span>
+                </a>
+            </li>
         </ul>
     </aside>
 
-    <!-- Main Problem Display -->
+    <!-- Main Live Workspace -->
     <main>
-        <header>
-            <div>
-                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">1. Two Sum</h2>
-                <p style="color: var(--text-muted);">LeetCode #1</p>
+        <!-- Telemetry Stats Panel -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <span>Cluster Node Status</span>
+                <div style="color: var(--accent-green);"><i class="fa-solid fa-circle-check"></i> Healthy</div>
             </div>
-            <span class="difficulty easy">Easy</span>
-        </header>
-
-        <section class="problem-description">
-            <h3>Problem Statement</h3>
-            <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.</p>
-            <p style="margin-top: 0.5rem;">You may assume that each input would have exactly one solution, and you may not use the same element twice.</p>
+            <div class="metric-card">
+                <span>Total Engineering Patterns</span>
+                <div>32 Solutions</div>
+            </div>
+            <div class="metric-card">
+                <span>Infrastructure Blueprints</span>
+                <div>14 Modules</div>
+            </div>
         </section>
 
-        <section class="code-container">
-            <div class="code-header">
-                <span><i class="fa-brands fa-python"></i> solution.py</span>
-                <button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> Copy</button>
+        <!-- Dynamic Code Sample Item -->
+        <div class="problem-wrapper" id="github-actions">
+            <div class="problem-meta">
+                <div class="problem-title">
+                    <h2>GitHub Actions Deployment Matrix</h2>
+                    <span class="tag">CI/CD Automation</span>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary);">
+                    ID: SC-042
+                </div>
             </div>
-            <pre><code id="code-block">def twoSum(nums: list[int], target: int) -> list[int]:
-    hash_map = {} # val -> index
+            
+            <div class="explanation-panel">
+                <strong>Scenario Challenge:</strong> Optimize structural image build steps to fire concurrently across multiple Node target microservices running variant semantic versions while isolating production artifacts using custom staging runners.
+            </div>
+
+            <!-- Modern IDE Style Shell Frame -->
+            <div class="terminal-container">
+                <div class="terminal-bar">
+                    <div class="file-info">
+                        <i class="fa-regular fa-file-code" style="color: var(--accent-blue);"></i>
+                        <span>deploy-pipeline.yaml</span>
+                    </div>
+                    <button class="action-button" onclick="copySnippet('devops-code-block')">
+                        <i class="fa-regular fa-copy"></i> Copy Manifest
+                    </button>
+                </div>
+                <pre><code id="devops-code-block">name: Multi-Environment Microservice Engine
+on:
+  push:
+    branches: [ main, release/* ]
+
+jobs:
+  orchestrate-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [auth-api, payment-gateway, inventory-worker]
+        node-version: [18.x, 20.x]
     
-    for i, num in enumerate(nums):
-        diff = target - num
-        if diff in hash_map:
-            return [hash_map[diff], i]
-        hash_map[num] = i
-        
-    return []</code></pre>
-        </section>
+    steps:
+      - name: Source Check-out
+        uses: actions/checkout@v4
+
+      - name: Initialize Runtime Environment v${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Parallel Image Composition & Compilation
+        run: |
+          cd services/${{ matrix.service }}
+          npm ci
+          npm run build --if-present</code></pre>
+            </div>
+        </div>
     </main>
 
+    <!-- Runtime Core Scripts -->
     <script>
-        function copyCode() {
-            const code = document.getElementById('code-block').innerText;
-            navigator.clipboard.writeText(code);
-            const btn = document.querySelector('.copy-btn');
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        function copySnippet(targetId) {
+            const codeString = document.getElementById(targetId).innerText;
+            navigator.clipboard.writeText(codeString);
+            
+            // Dynamic UI Event feedback state
+            const targetButton = event.currentTarget;
+            const nativeText = targetButton.innerHTML;
+            
+            targetButton.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981;"></i> Manifest Copied!';
             setTimeout(() => {
-                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
-            }, 2000);
+                targetButton.innerHTML = nativeText;
+            }, 2500);
         }
     </script>
 </body>
